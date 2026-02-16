@@ -1,0 +1,26 @@
+-- STORED PROCEDURE
+
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+
+CREATE PROCEDURE large_salaries ()
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+
+CALL large_salaries;
+
+DELIMITER $$
+CREATE PROCEDURE large_salaries2()
+	SELECT *
+	FROM employee_salary
+	WHERE salary >= 50000;
+    SELECT *
+	FROM employee_salary
+	WHERE salary >= 100000;
+END $$
+DELIMITER ;
+
+-- parameters
+
