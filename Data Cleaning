@@ -1,0 +1,67 @@
+SELECT * 
+FROM layoffs; 
+
+CREATE TABLE layoffs_staging
+LIKE layoffs;
+
+SELECT * 
+FROM layoffs_staging;
+
+INSERT layoffs_staging
+SELECT *
+FROM layoffs;
+
+SELECT * 
+FROM layoffs_staging;
+
+SELECT *,
+ROW_NUMBER () OVER (
+PARTITION BY company, industry, total_laid_off, percentage_laid_off, `date` ) AS row_num
+FROM layoffs_staging;
+
+WITH duplicate_cte AS
+(
+SELECT *,
+ROW_NUMBER () OVER (
+PARTITION BY company, industry, total_laid_off, percentage_laid_off, `date` ) AS row_num
+FROM layoffs_staging
+)
+SELECT *
+FROM duplicate_cte
+WHERE row_num >1;
+
+SELECT * 
+FROM layoffs_staging
+WHERE company = '100 Thieves';
+
+
+SELECT * 
+FROM layoffs_staging;
+
+SELECT DISTINCT (TRIM(company))
+FROM layoffs_staging;
+
+SELECT company, TRIM(company)
+FROM layoffs_staging;
+
+UPDATE layoffs_staging
+SET company = TRIM(company);
+
+SELECT company
+FROM layoffs_staging;
+
+SELECT DISTINCT industry
+FROM layoffs_staging
+ORDER BY 1;
+
+SELECT *
+FROM layoffs_staging
+WHERE industry LIKE 'Crypto%';
+
+
+UPDATE layoffs_staging
+SET industry = 'Crypto'
+WHERE industry = 'Cryptocurrency';
+
+SELECT DISTINCT industry
+FROM layoffs_staging;
